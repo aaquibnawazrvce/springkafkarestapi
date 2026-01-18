@@ -1,0 +1,14 @@
+{
+  "messageId": "MSG-INVALID-001",
+  "eventType": "TEST_EVENT",
+  "timestamp": "2025-12-24T10:00:00",
+  "payload": {
+    "customerId": "CUST-BAD",
+    "customerName": "X",
+    "email": "not-an-email",
+    "phone": "123",
+    "amount": -50.00,
+    "currency": "US",
+    "active": "maybe"
+  }
+}

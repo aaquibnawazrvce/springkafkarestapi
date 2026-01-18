@@ -1,0 +1,12 @@
+{
+  "messageId": "",
+  "payload": {
+    "customerId": "CUST-6666",
+    "customerName": "Test User",
+    "email": "test@example.com",
+    "phone": "+1234567890",
+    "amount": 100.00,
+    "currency": "USD",
+    "active": true
+  }
+}

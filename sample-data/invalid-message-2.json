@@ -1,0 +1,8 @@
+{
+  "messageId": "MSG-INVALID-002",
+  "eventType": "MISSING_FIELDS",
+  "timestamp": "2025-12-24T11:00:00",
+  "payload": {
+    "customerId": "CUST-5555"
+  }
+}

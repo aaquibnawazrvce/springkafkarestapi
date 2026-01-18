@@ -1,0 +1,25 @@
+{
+  "mappings": [
+    {
+      "name": "Process Message - Success",
+      "request": {
+        "method": "POST",
+        "urlPath": "/api/v1/process"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "success": true,
+          "message": "Message processed successfully",
+          "transaction_id": "{{jsonPath request.body '$.transaction_id'}}",
+          "reference_id": "REF-{{randomValue length=10 type='ALPHANUMERIC'}}",
+          "status_code": 200
+        },
+        "transformers": ["response-template"]
+      }
+    }
+  ]
+}

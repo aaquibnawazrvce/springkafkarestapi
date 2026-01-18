@@ -1,0 +1,92 @@
+spring:
+  application:
+    name: kafka-rest-bridge
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:kafka-rest-bridge-group}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: 'incomingMessage:com.example.kafka.model.IncomingMessage'
+      max-poll-records: ${KAFKA_MAX_POLL_RECORDS:10}
+      enable-auto-commit: false
+    
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+    
+    listener:
+      ack-mode: manual
+      concurrency: ${KAFKA_CONCURRENCY:3}
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+# Application-specific configuration
+app:
+  kafka:
+    topic:
+      input: ${KAFKA_INPUT_TOPIC:input-messages}
+      dlq: ${KAFKA_DLQ_TOPIC:dlq-messages}
+  
+  rest-api:
+    base-url: ${REST_API_BASE_URL:http://localhost:8081}
+    endpoint: ${REST_API_ENDPOINT:/api/v1/process}
+    timeout:
+      connect: ${REST_API_CONNECT_TIMEOUT:5000}
+      read: ${REST_API_READ_TIMEOUT:10000}
+    retry:
+      max-attempts: ${REST_API_RETRY_MAX_ATTEMPTS:3}
+      initial-interval: ${REST_API_RETRY_INITIAL_INTERVAL:1000}
+      multiplier: ${REST_API_RETRY_MULTIPLIER:2.0}
+      max-interval: ${REST_API_RETRY_MAX_INTERVAL:10000}
+    auth:
+      enabled: ${REST_API_AUTH_ENABLED:false}
+      type: ${REST_API_AUTH_TYPE:bearer}  # bearer or basic
+      token: ${REST_API_AUTH_TOKEN:}
+      username: ${REST_API_USERNAME:}
+      password: ${REST_API_PASSWORD:}
+  
+  validation:
+    json-schema-path: ${JSON_SCHEMA_PATH:classpath:schema/message-schema.json}
+    fail-fast: ${VALIDATION_FAIL_FAST:true}
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    kafka:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.example.kafka: ${LOG_LEVEL:DEBUG}
+    org.springframework.kafka: INFO
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOG_FILE_PATH:logs/application.log}
+    max-size: 10MB
+    max-history: 30
+
+server:
+  port: ${SERVER_PORT:8080}

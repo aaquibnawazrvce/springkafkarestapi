@@ -1,0 +1,14 @@
+{
+  "messageId": "MSG-20251224-003",
+  "eventType": "SUBSCRIPTION_RENEWED",
+  "timestamp": "2025-12-24T09:15:00",
+  "payload": {
+    "customerId": "CUST-9876",
+    "customerName": "Alice Cooper",
+    "email": "alice.cooper@email.com",
+    "phone": "+61412345678",
+    "amount": 19.99,
+    "currency": "AUD",
+    "active": false
+  }
+}

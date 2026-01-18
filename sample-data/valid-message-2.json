@@ -1,0 +1,19 @@
+{
+  "messageId": "MSG-20251224-002",
+  "eventType": "REFUND_PROCESSED",
+  "timestamp": "2025-12-24T15:45:30",
+  "payload": {
+    "customerId": "CUST-1234",
+    "customerName": "John Doe",
+    "email": "john.doe@company.com",
+    "phone": "+12025551234",
+    "amount": 99.99,
+    "currency": "USD",
+    "description": "Refund for order #12345",
+    "active": true
+  },
+  "metadata": {
+    "source": "mobile-app",
+    "version": "v3.0"
+  }
+}

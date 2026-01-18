@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Incoming Message Schema",
+  "description": "JSON schema for validating incoming Kafka messages",
+  "required": ["messageId", "eventType", "timestamp", "payload"],
+  "properties": {
+    "messageId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for the message"
+    },
+    "eventType": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Type of event"
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$",
+      "description": "ISO 8601 timestamp"
+    },
+    "payload": {
+      "type": "object",
+      "required": ["customerId", "customerName", "email", "phone", "amount", "currency", "active"],
+      "properties": {
+        "customerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "customerName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^\\+?[1-9]\\d{1,14}$"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0.01
+        },
+        "currency": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 3,
+          "pattern": "^[A-Z]{3}$"
+        },
+        "description": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}

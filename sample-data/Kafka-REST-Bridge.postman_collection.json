@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Kafka REST Bridge API",
+    "description": "API collection for testing the Kafka REST Bridge microservice",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health & Monitoring",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Detailed Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/health?showDetails=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "health"],
+              "query": [
+                {
+                  "key": "showDetails",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Application Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/info",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "info"]
+            }
+          }
+        },
+        {
+          "name": "Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/actuator/metrics",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8080",
+              "path": ["actuator", "metrics"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mock REST API",
+      "item": [
+        {
+          "name": "Process Message - Success",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"transaction_id\": \"TXN-TEST-001\",\n  \"event_name\": \"PAYMENT_CREATED\",\n  \"timestamp\": \"2025-12-24T14:30:00\",\n  \"customer\": {\n    \"id\": \"CUST-123\",\n    \"full_name\": \"John Doe\",\n    \"contact_email\": \"john@example.com\",\n    \"contact_phone\": \"+1234567890\",\n    \"is_active\": true\n  },\n  \"transaction\": {\n    \"amount\": 100.50,\n    \"currency_code\": \"USD\",\n    \"notes\": \"Test transaction\"\n  }\n}"
+            },
+            "url": {
+              "raw": "http://localhost:8081/api/v1/process",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["api", "v1", "process"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Kafka Operations",
+      "item": [
+        {
+          "name": "Send Valid Message to Kafka",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// This is a reference - actual Kafka message sending",
+                  "// should be done via kafka-console-producer or Kafka UI",
+                  "console.log('Use kafka-console-producer to send messages');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messageId\": \"MSG-{{$timestamp}}\",\n  \"eventType\": \"PAYMENT_CREATED\",\n  \"timestamp\": \"{{$isoTimestamp}}\",\n  \"payload\": {\n    \"customerId\": \"CUST-{{$randomInt}}\",\n    \"customerName\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"phone\": \"+1{{$randomPhoneNumber}}\",\n    \"amount\": {{$randomPrice}},\n    \"currency\": \"USD\",\n    \"description\": \"Test payment from Postman\",\n    \"active\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:9092",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "9092"
+            },
+            "description": "Note: This is a placeholder. Use kafka-console-producer or Kafka UI to send actual messages."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "mockApiUrl",
+      "value": "http://localhost:8081"
+    }
+  ]
+}
